@@ -1,0 +1,30 @@
+body
+{
+	margin:				0;
+	padding:			0;
+    font-family: 		"Lucida Console", Monaco, monospace;
+}
+#cost-calendar
+{
+	display:			flex;
+	flex-wrap:			wrap;
+}
+.calendar-item
+{
+	flex-wrap:			wrap;
+	width:				33%;
+	height:				auto;
+	background-color:	#EFEFEF;
+	position:			relative;
+	border-right:		1px solid #CCCCCC;
+	border-bottom:		1px solid #CCCCCC;
+}
+.date-number
+{
+	color:				#CCCCCC;
+	padding:			1%;
+}
+.date-body
+{	
+	min-height:			33px;
+}
