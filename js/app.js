@@ -11,25 +11,27 @@ $(document).ready(function(){
 
 function checkApplicationLogic(rootDir,time)
 {
-	console.log(arguments);
 	var fileName = time.month + time.year;
 	// check on the server if a particular file exists
 
-	var checkIfFileExists = function(rootDir,fileName){
-		$.ajax({
-			type				: "POST",
-			url                 : rootDir + "php/money.php",
-			data 				: 
-			{
-				fileName	: fileName	
-			},
-			success				: function(outcome)
-			{
-				return outcome;
-			}
-		});
-	}
-	console.log(checkIfFileExists());
+	checkIfFileExists(rootDir,fileName);
+}
+
+var checkIfFileExists = function(rootDir,fileName)
+{
+	// checks if this file exists on the server
+	$.ajax({
+		type				: "POST",
+		url                 : rootDir + "php/money.php",
+		data 				: 
+		{
+			fileName		: fileName	
+		},
+		success				: function(outcome)
+		{
+			console.log(outcome);
+		}
+	});
 }
 
 function defineMetadata(time,money)
