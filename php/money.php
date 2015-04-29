@@ -4,29 +4,26 @@ if (isset($_POST['fileName']))
 {
 	$fileName = $_POST['fileName'];
 
-	// file doesnt exist
+	//our json to write
 	if (!file_exists("../" . $fileName . ".json"))
 	{
-		echo "false";
+		echo "write me a file bitch";
+		// write a blank file
+		$contents = "HERP";
 	}
 	else
-	{	
-		// file exists
-		echo "true";
-		// append to existing file 
-		/*
+	{
+		// append to existing file
 		$current = file_get_contents("../" . $fileName . ".json");
-		$new = "DERP";
+		$new = "DERP"
 		$contents = $current . ',' . $new . ']}';
-		*/
 	}
 
-		/*
 		$file = fopen("../" . $fileName . ".json","w+");
 
 		fwrite($file, $contents);
 		fclose($file);
-		*/
+
 }
 
 ?>
