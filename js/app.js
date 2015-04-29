@@ -4,35 +4,47 @@ $(document).ready(function(){
 	var rootDir = "http://localhost/money-calendar/";
 	//var rootDir = "http://intheon.xyz/liv/";
 	defineMetadata(time);
-	checkApplicationLogic(rootDir,time);
+	checkIfFileExists(rootDir,time);
 	loadCalendar(time);
 	loadInformation(time);
 });
 
-function checkApplicationLogic(rootDir,time)
+var checkIfFileExists = function(rootDir,time)
 {
-	var fileName = time.month + time.year;
 	// check on the server if a particular file exists
+	var fileName = time.month + time.year;
+	var outcome;
 
-	checkIfFileExists(rootDir,fileName);
-}
-
-var checkIfFileExists = function(rootDir,fileName)
-{
 	// checks if this file exists on the server
 	$.ajax({
 		type				: "POST",
 		url                 : rootDir + "php/money.php",
 		data 				: 
 		{
+			purpose			: "check_file", 
 			fileName		: fileName	
 		},
 		success				: function(outcome)
 		{
-			console.log(outcome);
+			// our callback
+			checkOutcome(time,outcome);
 		}
 	});
 }
+
+function checkOutcome(time,outcome)
+{
+	if (outcome == "true")
+	{
+		console.log("file does exist");
+	}
+	else if (outcome == "false")
+	{
+		console.log("file doesnt exist");
+	}
+}
+
+
 
 function defineMetadata(time,money)
 {
