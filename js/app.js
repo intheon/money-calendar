@@ -19,12 +19,9 @@ $(document).ready(function()
 	// globals
 	var time 			= {};
 	var money 			= {};
-	var rootDir 		= "http://localhost/money-calendar/"; // local
-	//var rootDir 		= "http://intheon.xyz/liv/"; // production
 
 	// functions
-	defineMetadata(time);
-	checkApplicationLogic(rootDir,time);
+	defineMetadata(time,money);
 	loadCalendar(time);
 	loadInformation(time);
 });
@@ -36,10 +33,18 @@ function defineMetadata(time,money)
 	time.today 			= moment();
 	time.year 			= moment().year();
 	time.month 			= moment().format("MMMM");
+	time.monthNum		= moment().format("M");
 	time.todaysDate 	= moment().format("D");
 	time.daysInMonth 	= moment().daysInMonth();
 	time.payday 		= moment().date("28");
 	time.toPayday 		= time.payday.diff(time.today,"days");
+
+	money.netPay 		= function(time,money){
+		var april = time.monthNum - 1;
+		ajaxController(april);
+	}
+
+	money.netPay(time,money);
 }
 
 // actually draws the calendar to the dom
@@ -49,19 +54,22 @@ function loadCalendar(time)
 	// draw all the dates
 	for (counter = 1; counter <= time.daysInMonth; counter++)
 	{
+
 		$("#cost-calendar").append("<div class='calendar-item' id='calendar-item-"+counter+"'>\
 			<div class='date-number'>"+counter+"</div>\
-			<div class='date-body'></div>\
-			</div>");
+			<div class='date-body'></div></div>");
+
 		if (counter == time.todaysDate)
 		{
 			$("#calendar-item-" + counter).append("<div class='label'>Today</div>");
 			$("#calendar-item-" + counter).css("background-color","#FDE7BA");
 		}
+
 		if (counter == 28)
 		{
 			$("#calendar-item-28").append("<div class='label'>Payday</div>")
 		}
+
 	}
 }
 
@@ -74,6 +82,14 @@ function loadInformation(time)
 		</div>")
 }
 
+function loadModal()
+{
+
+}
+
+
+// REDUNDANT
+// DELETE THESE WHEN YOU CAN
 
 
 function checkApplicationLogic(rootDir,time)
@@ -84,15 +100,18 @@ function checkApplicationLogic(rootDir,time)
 	checkIfFileExists(rootDir,fileName);
 }
 
-var checkIfFileExists = function(rootDir,fileName)
+function ajaxController(monthToCheck)
 {
+	var rootDir 		= "http://localhost/money-calendar/"; // local
+	//var rootDir 		= "http://intheon.xyz/liv/"; // production
+
 	// checks if this file exists on the server
 	$.ajax({
 		type				: "POST",
 		url                 : rootDir + "php/money.php",
 		data 				: 
 		{
-			fileName		: fileName	
+			monthToCheck	: monthToCheck	
 		},
 		success				: function(outcome)
 		{
