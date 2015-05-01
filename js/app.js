@@ -125,4 +125,3 @@ function defineMoney(time,money)
 {
 	money.gross			= "???";
 }
-
