@@ -40,8 +40,9 @@ function defineMetadata(time,money)
 	time.toPayday 		= time.payday.diff(time.today,"days");
 
 	money.netPay 		= function(time,money){
-		var april = time.monthNum - 1;
-		ajaxController(april);
+		var lastMonth	= time.monthNum - 1;
+		var netPay 		= ajaxController(lastMonth);
+		console.log(netPay);
 	}
 
 	money.netPay(time,money);
@@ -115,9 +116,11 @@ function ajaxController(monthToCheck)
 		},
 		success				: function(outcome)
 		{
-			console.log(outcome);
+			return outcome;
 		}
 	});
+
+	return outcome;
 }
 
 
