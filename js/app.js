@@ -1,35 +1,31 @@
-// app.js - the 'glue' - 2015 intheon
-
-// -----------------------------------------------------------------------------------
-// 		Workflow
+// -------------------------------------------------------------
+// 						Workflow
+//					  2015 intheon
 //
 // 	-	Draw a blank calendar with moment.js
-// 	-	Check if net wage for that month is available. if it is retreive and draw it, if it isnt request it, store it, retreive, and draw
-// 	-	Have form to add in spend for that day
-// 	-	Also have it so you can add spend for previous and future days
-// 	-	Have information panel to show how much remains, broken down into useful facts
-// -----------------------------------------------------------------------------------
+// 	-	Check if net wage for that month is available.
+// 	-	Have form to add in spend
+// 	-	Have information panel to show how much remains
+//
+// -------------------------------------------------------------
 
-// GO
-
-// initialisation, fires all the stuff when the page is loaded
-
+// initialisation
 $(document).ready(function()
 {
-	// globals
+// globals
 	var time 			= {};
 	var money 			= {};
 
-	// functions
+// functions
 	defineMetadata(time,money);
 	loadCalendar(time);
 	loadInformation(time);
 });
 
-// defining some useful stuff in objects, as a tidier shorthand
-
+// defining useful stuff as objects
 function defineMetadata(time,money)
 {
+// time
 	time.today 			= moment();
 	time.year 			= moment().year();
 	time.month 			= moment().format("MMMM");
@@ -39,13 +35,34 @@ function defineMetadata(time,money)
 	time.payday 		= moment().date("28");
 	time.toPayday 		= time.payday.diff(time.today,"days");
 
-	money.netPay 		= function(time,money){
-		var lastMonth	= time.monthNum - 1;
-		var netPay 		= ajaxController(lastMonth);
-		console.log(netPay);
-	}
+// money
+	ajaxController(money,"netPay",4);
 
-	money.netPay(time,money);
+	Object.observe(money,function(changes){
+		console.log(money);
+	});
+
+}
+
+function ajaxController(rootObject,newPropertyName,monthToCheck)
+{
+	var rootDir 		= "http://localhost/money-calendar/"; // local
+	//var rootDir 		= "http://intheon.xyz/liv/"; // production
+
+	// checks if this file exists on the server
+	$.ajax({
+		type				: "POST",
+		url                 : rootDir + "php/money.php",
+		data 				: 
+		{
+			monthToCheck	: monthToCheck	
+		},
+		success				: function(data)
+		{
+			rootObject[newPropertyName] = data;
+		}
+	});
+
 }
 
 // actually draws the calendar to the dom
@@ -89,6 +106,7 @@ function loadModal()
 }
 
 
+
 // REDUNDANT
 // DELETE THESE WHEN YOU CAN
 
@@ -101,30 +119,8 @@ function checkApplicationLogic(rootDir,time)
 	checkIfFileExists(rootDir,fileName);
 }
 
-function ajaxController(monthToCheck)
-{
-	var rootDir 		= "http://localhost/money-calendar/"; // local
-	//var rootDir 		= "http://intheon.xyz/liv/"; // production
-
-	// checks if this file exists on the server
-	$.ajax({
-		type				: "POST",
-		url                 : rootDir + "php/money.php",
-		data 				: 
-		{
-			monthToCheck	: monthToCheck	
-		},
-		success				: function(outcome)
-		{
-			return outcome;
-		}
-	});
-
-	return outcome;
-}
-
-
 function defineMoney(time,money)
 {
 	money.gross			= "???";
 }
+

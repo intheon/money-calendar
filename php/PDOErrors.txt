@@ -1,1 +1,0 @@
-SQLSTATE[HY093]: Invalid parameter number: no parameters were boundSQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de ':month' à la ligne 1
