@@ -11,6 +11,7 @@ body
 }
 .calendar-item
 {
+	position:			relative !important;
 	flex-wrap:			wrap;
 	width:				33%;
 	height:				auto;
@@ -18,6 +19,7 @@ body
 	position:			relative;
 	border-right:		1px solid #CCCCCC;
 	border-bottom:		1px solid #CCCCCC;
+	z-index: 			1;
 }
 .date-number
 {
@@ -26,5 +28,28 @@ body
 }
 .date-body
 {	
-	min-height:			33px;
+	min-height:			44px;
+}
+.active-cell
+{
+	background-color:	#FDE7BA;
+}
+
+.calendar-item:hover
+{
+	cursor:			  	pointer;
+	-webkit-filter: blur(1px); -moz-filter: blur(1px); -o-filter: blur(1px); -ms-filter: blur(1px); filter: blur(1px);
+	background-image:	url(../plus.png);
+	background-repeat:	no-repeat;
+	background-position: center center;
+	background-size:	 20px;
+}
+
+.modal-overlay
+{
+	background-color: 	red;
+	width: 				100%;
+	z-index: 			4;
+	height: 			100%;
+	position: 			absolute;
 }

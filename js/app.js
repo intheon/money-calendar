@@ -19,7 +19,6 @@ $(document).ready(function()
 // functions
 	defineMetadata(time,money);
 	loadCalendar(time);
-	loadInformation(time);
 });
 
 // defining useful stuff as objects
@@ -39,7 +38,7 @@ function defineMetadata(time,money)
 	ajaxController(money,"netPay",4);
 
 	Object.observe(money,function(changes){
-		console.log(money);
+		loadInformation(time,money)
 	});
 
 }
@@ -80,47 +79,57 @@ function loadCalendar(time)
 		if (counter == time.todaysDate)
 		{
 			$("#calendar-item-" + counter).append("<div class='label'>Today</div>");
-			$("#calendar-item-" + counter).css("background-color","#FDE7BA");
+			$("#calendar-item-" + counter).addClass("active-cell");
 		}
 
 		if (counter == 28)
 		{
-			$("#calendar-item-28").append("<div class='label'>Payday</div>")
+			$("#calendar-item-28").append("<div class='label'>Payday</div>");
 		}
 
+		$("#calendar-item-" + counter).click(function(event){
+			loadModal(event.currentTarget.id);
+		});
 	}
 }
 
 // and draws all the helpful bits of motovational information
-function loadInformation(time)
+function loadInformation(time,money)
 {
 	$("#information-panel").append("<div class='information-row'>\
 			<div class='information-month'>It is "+time.month+"</div>\
 			<div class='information-next-payday'>You have "+time.toPayday+" days until payday</div>\
-		</div>")
+			<div class='information-payday-amount'>You were paid £"+money.netPay+" this month</div>\
+		</div>");
+
+	$("#calendar-item-28 .date-body").append("£"+money.netPay);
 }
 
-function loadModal()
+var alreadyHasModal = [];
+
+function loadModal(whoRang)
 {
+ // compare array - one modal loaded per cell 
+
+ // always add the first value
+ 	if (alreadyHasModal[0] === undefined)
+ 	{
+		alreadyHasModal.push(whoRang);
+		console.log(alreadyHasModal);
+ 	}
+ 	else
+ 	{
+ 		for (var p = 0; p <= alreadyHasModal.length; p++)
+ 		{
+ 			if (whoRang == alreadyHasModal[p])
+ 			{
+ 				console.log("already there");
+ 				console.log(alreadyHasModal);
+ 				break;
+ 			}
+ 		}
+ 	}
+
+	//$("#" + whoRang).prepend("<div class='modal-overlay'></div>");
 
 }
-
-
-
-// REDUNDANT
-// DELETE THESE WHEN YOU CAN
-
-
-function checkApplicationLogic(rootDir,time)
-{
-	var fileName = time.month + time.year;
-	// check on the server if a particular file exists
-
-	checkIfFileExists(rootDir,fileName);
-}
-
-function defineMoney(time,money)
-{
-	money.gross			= "???";
-}
-
