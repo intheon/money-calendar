@@ -21,6 +21,15 @@ body
 	border-bottom:		1px solid #CCCCCC;
 	z-index: 			1;
 }
+.calendar-item:hover
+{
+	cursor:			  	pointer;
+	/*-webkit-filter: blur(1px); -moz-filter: blur(1px); -o-filter: blur(1px); -ms-filter: blur(1px); filter: blur(1px);*/
+	background-image:	url(../plus.png);
+	background-repeat:	no-repeat;
+	background-position: center center;
+	background-size:	 20px;
+}
 .date-number
 {
 	color:				#CCCCCC;
@@ -34,17 +43,6 @@ body
 {
 	background-color:	#FDE7BA;
 }
-
-.calendar-item:hover
-{
-	cursor:			  	pointer;
-	/*-webkit-filter: blur(1px); -moz-filter: blur(1px); -o-filter: blur(1px); -ms-filter: blur(1px); filter: blur(1px);*/
-	background-image:	url(../plus.png);
-	background-repeat:	no-repeat;
-	background-position: center center;
-	background-size:	 20px;
-}
-
 .modal-overlay
 {
 	width: 				100%;

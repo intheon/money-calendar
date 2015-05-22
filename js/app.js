@@ -121,12 +121,14 @@ function loadModal(whoRang)
  	{
  		for (var p = 0; p <= alreadyHasModal.length - 1; p++)
  		{
+ 			console.log(alreadyHasModal.length);
  			if (alreadyHasModal[p] == whoRang)
  			{
  				break;
  			}
  			else
  			{
+ 				console.log("being called");
  				drawModal(whoRang);
  			}
  		}
@@ -137,4 +139,12 @@ function loadModal(whoRang)
 function drawModal(whoRang)
 {
 	$("#" + whoRang).prepend("<div class='modal-overlay'><form><textarea placeholder='add...'></textarea></form></div>");
+
+	console.log("being fired");
+	$("#" + whoRang).keyup(function(event){
+		if (event.keyCode == 13)
+		{
+			console.log(event);
+		}
+	});
 }
