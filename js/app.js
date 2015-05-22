@@ -87,6 +87,13 @@ function loadCalendar(time)
 		}
 
 		$("#calendar-item-" + counter).click(function(event){
+
+			for (var i = 0; i <= alreadyHasModal.length - 1; i++)
+ 			{
+ 				console.log(alreadyHasModal.length);
+ 				console.log(alreadyHasModal);
+ 			}
+ 			
 			loadModal(event.currentTarget.id);
 		});
 	}
