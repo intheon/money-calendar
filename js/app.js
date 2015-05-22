@@ -65,7 +65,6 @@ function ajaxController(rootObject,newPropertyName,monthToCheck)
 }
 
 // actually draws the calendar to the dom
-
 function loadCalendar(time)
 {
 	// draw all the dates
@@ -109,27 +108,33 @@ var alreadyHasModal = [];
 
 function loadModal(whoRang)
 {
+ // logic to only draw one per cell
  // compare array - one modal loaded per cell 
 
  // always add the first value
  	if (alreadyHasModal[0] === undefined)
  	{
 		alreadyHasModal.push(whoRang);
-		console.log(alreadyHasModal);
+		drawModal(whoRang);
  	}
  	else
  	{
- 		for (var p = 0; p <= alreadyHasModal.length; p++)
+ 		for (var p = 0; p <= alreadyHasModal.length - 1; p++)
  		{
- 			if (whoRang == alreadyHasModal[p])
+ 			if (alreadyHasModal[p] == whoRang)
  			{
- 				console.log("already there");
- 				console.log(alreadyHasModal);
  				break;
  			}
+ 			else
+ 			{
+ 				drawModal(whoRang);
+ 			}
  		}
+ 		alreadyHasModal.push(whoRang);
  	}
+}
 
-	//$("#" + whoRang).prepend("<div class='modal-overlay'></div>");
-
+function drawModal(whoRang)
+{
+	$("#" + whoRang).prepend("<div class='modal-overlay'><form><textarea placeholder='add...'></textarea></form></div>");
 }
