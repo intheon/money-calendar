@@ -16,6 +16,7 @@ body
 	width:				33%;
 	height:				auto;
 	background-color:	#EFEFEF;
+	transition:			background-color 1s;
 	position:			relative;
 	border-right:		1px solid #CCCCCC;
 	border-bottom:		1px solid #CCCCCC;
@@ -26,6 +27,7 @@ body
 	cursor:			  	pointer;
 	/*-webkit-filter: blur(1px); -moz-filter: blur(1px); -o-filter: blur(1px); -ms-filter: blur(1px); filter: blur(1px);*/
 	background-image:	url(../plus.png);
+	background-color:	#FEF1D6;
 	background-repeat:	no-repeat;
 	background-position: center center;
 	background-size:	 20px;
@@ -47,7 +49,7 @@ body
 }
 .modal-overlay
 {
-	background-color: 	#FFFFFF;
+	background-color: 	#FFF9EA;
 	width: 				100%;
 	z-index: 			4;
 	height: 			100%;
@@ -61,7 +63,7 @@ body
 	width: 				100%;
 	height: 			100% !important;
 	position:			absolute;
-    box-sizing: border-box;
+    box-sizing: 		border-box;
     resize: 			none;
 }
 .modal-overlay-close
@@ -101,6 +103,11 @@ body
 	color:				#E9B34F;
 	opacity:			0.6;
 }
+.modal-overlay form
+{
+	display:			flex;
+	flex-direction:		column;
+}
 .cell-menu
 {
 	display:			none;
@@ -134,16 +141,35 @@ input[type="button"]
 }
 input[type="text"]
 {
-	border:				0;
-	padding: 			2%;
-	width:				50%;
-	text-align: 		center;
+	flex:				1;
+	width:				85%;
+	border:				1px solid;
+	border-color:		#FFF2D2;
+	padding: 			6px;
+	margin-left:		2px;
+	margin-top:			2px;
+	text-align: 		left;
 	box-sizing: 		border-box;
 	float:				left;
+	background-color:	#FEF1D6;
 }
-input[type="text"]:nth-child(even)
-{
-	background-color:	#e1e1e1;
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    			#AA7700;
+    letter-spacing: 	3px;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   	color:    			#AA7700;
+  	opacity:  			1;
+       letter-spacing: 	3px;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   	color:    			#AA7700;
+   	opacity:  			1;
+    letter-spacing: 	3px;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   	color:    			#AA7700;
+    letter-spacing: 	3px;
 }
 .warning-message
 {
