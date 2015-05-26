@@ -37,9 +37,8 @@ if (isset($_POST['monthToCheck']))
 
 		// cycle through
 		foreach ($response as $row) {
-
 			// spit out amount paid in that month
-    		//echo $row['payday_amount'];
+    		echo $row['payday_amount'];
 		}
 
 

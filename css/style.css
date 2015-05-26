@@ -55,7 +55,7 @@ body
 }
 .modal-overlay textarea 
 {
-	padding:			1%;
+	padding:			2%;
 	margin:				0;
 	border: 			0;
 	width: 				100%;
@@ -66,14 +66,37 @@ body
 }
 .modal-overlay-close
 {
-	padding:			8px;
+	padding:			5px;
 	position: 			absolute;
 	top:				0;
-	left:				0;
-	z-index:			11;
-	float:				left;
+	right:				0;
+	z-index:			13;
 }
+.modal-overlay-close img
+{
+	float:				right;
+	width:				40%;
+}
+.modal-overlay-add
+{
+	padding:			5px;
+	position: 			absolute;
+	top:				45%;
+	right:				0;
+	z-index:			13;
+}
+.modal-overlay-add img
+{
+	float:				right;
+	width:				40%;
+}
+
 .modal-overlay-close:hover
+{
+	color:				#E9B34F;
+	opacity:			0.6;
+}
+.modal-overlay-add:hover
 {
 	color:				#E9B34F;
 	opacity:			0.6;
@@ -100,6 +123,7 @@ body
 	z-index:			9;
 	float:				right;
 }
+
 input[type="button"]
 {
 	padding: 			2%;

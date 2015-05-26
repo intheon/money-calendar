@@ -36,25 +36,21 @@ function defineMetadata(time,money)
 
 // money
 
-	money.netPay 		= "1424";
-	loadInformation(time,money);
-/*
+	//money.netPay 		= "1424";
+	//loadInformation(time,money);
+
 	ajaxController(money,"netPay",4);
 
 	Object.observe(money,function(changes){
-		console.log("being fired 2");
 		loadInformation(time,money)
 	});
-*/
+
 }
 
 function ajaxController(rootObject,newPropertyName,monthToCheck)
 {
-	rootObject[newPropertyName] = "1424";
-
-	/*
 	var rootDir 		= "http://localhost/money-calendar/"; // local
-	//var rootDir 		= "http://intheon.xyz/liv/"; // production
+	//var rootDir 		= "http://intheon.xyz/money-calendar/"; // production
 
 	// checks if this file exists on the server
 	$.ajax({
@@ -66,13 +62,9 @@ function ajaxController(rootObject,newPropertyName,monthToCheck)
 		},
 		success				: function(data)
 		{
-			//rootObject[newPropertyName] = data;
-
-			//testing
-			rootObject[newPropertyName] = "1424";
+			rootObject[newPropertyName] = data;
 		}
 	});
-*/
 }
 
 // actually draws the calendar to the dom
@@ -83,7 +75,7 @@ function loadCalendar(time)
 	{
 
 		$("#cost-calendar").append("<div class='calendar-item' id='calendar-item-"+counter+"'>\
-			<div class='cell-menu'><img src='./note.png' class='button-add' id='button-note' width='10%'><img src='./paper-bill.png' width='10%' class='button-add' id='button-spend'></div>\
+			<div class='cell-menu'><img src='./note.png' class='button-add' id='button-note' width='7%'><img src='./paper-bill.png' width='7%' class='button-add' id='button-spend'></div>\
 			<div class='date-number'>"+counter+"</div>\
 			<div class='date-body'></div></div>");
 
@@ -161,27 +153,40 @@ function drawModal(whoRang,type)
 {
 	if (type == "button-note")
 	{
-		$("#" + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='./cross.png' width='40%'></div><form><textarea placeholder='add...'></textarea></form></div>");
+		$("#" + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='./cross.png'></div><div class='modal-overlay-add'><img src='./add.png' class='button-add-note'></div><form><textarea placeholder='add...'></textarea></form></div>");
 	}
 	else if (type == "button-spend")
 	{
-		$("#" + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='./cross.png' width='40%'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'><input type='button' value='add' class='button-add-spend'></form></div>");
+		$("#" + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='./cross.png'></div><div class='modal-overlay-add'><img src='./add.png' class='button-add-spend'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'></form></div>");
 	}
 
 	$("#" + whoRang).keyup(function(event){
 		if (event.keyCode == 13 && type == "button-note")
-		{
-			getModalValue(event);
+		{	
+			var rawValue = event.target.value;
+			var parentCell = event.currentTarget.id;
+			//console.log(event.target.value);
+			getModalValue(rawValue,parentCell);
 		}
 	});
 
 	$(".button-add-spend").click(function(event){
 
-		var firstField = event.currentTarget.previousElementSibling.previousElementSibling.className;
-		var secondField = event.currentTarget.previousElementSibling.className;
-		var rootId = event.currentTarget.offsetParent.offsetParent.id;
+		if (type == "button-note")
+		{
+			getModalValue(event);
+		}
+		//var firstField = event.currentTarget.o.previousElementSibling.className;
+		//var secondField = event.currentTarget.previousElementSibling.className;
+		var rootId = event.currentTarget.offsetParent.offsetParent.offsetParent.id;
 
-		getFormValue(rootId,firstField,secondField)
+		var classes = [];
+
+		$("#" + whoRang + " input[type='text']").each(function(){
+			classes.push(this.className);
+		});
+
+		getFormValue(rootId,classes[0],classes[1])
 	});
 
 	$("#" + whoRang + " input[type='text']").keyup(function(event){
@@ -223,26 +228,26 @@ function removeModal(whoRang)
 	$("#" + id).unbind("keyup");
 }
 
-function getModalValue(event)
+function getModalValue(rawValue,parentCell)
 {
-	var rawValue = event.currentTarget.firstChild.childNodes[1].lastChild.value;
+	//var rawValue = event.currentTarget.firstChild.childNodes[1].lastChild.value;
 
-	var parentCell = event.currentTarget.id;
+	//var parentCell = event.currentTarget.id;
 
 	// todo - persistence!
 	$("#" + parentCell + " .date-body").append(rawValue);
 
-	removeModal(event.currentTarget.id);
+	removeModal(parentCell);
 }
 
-function getFormValue(rootId,firstField,secondField)
+function getFormValue(parentCell,firstField,secondField)
 {
 	//var firstField = formId.currentTarget.previousElementSibling.previousElementSibling.className;
 	//var secondField = formId.currentTarget.previousElementSibling.className;
 	//var rootId = formId.currentTarget.offsetParent.offsetParent.id;
 
-	var firstFieldVal = $("#" + rootId + " .modal-overlay form .add-spend-label").val()
-	var secondFieldVal = $("#" + rootId + " .modal-overlay form .add-spend-integer").val()
+	var firstFieldVal = $("#" + parentCell + " .modal-overlay form .add-spend-label").val()
+	var secondFieldVal = $("#" + parentCell + " .modal-overlay form .add-spend-integer").val()
 	//console.log(firstField.className);
 	
 	if (firstFieldVal == "" || secondFieldVal == "") showWarning("fill out all fields");
@@ -251,8 +256,8 @@ function getFormValue(rootId,firstField,secondField)
 		if (isNaN(secondFieldVal)) showWarning("this isnt a number!");
 		else
 		{
-			$("#" + rootId + " .date-body").append("<div class='spend-item'><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>" + secondFieldVal + "</div></div>")
-			removeModal(rootId);
+			$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>" + secondFieldVal + "</div></div>")
+			removeModal(parentCell);
 		}
 	}
 }
