@@ -171,13 +171,6 @@ function drawModal(whoRang,type)
 	});
 
 	$(".button-add-spend").click(function(event){
-
-		if (type == "button-note")
-		{
-			getModalValue(event);
-		}
-		//var firstField = event.currentTarget.o.previousElementSibling.className;
-		//var secondField = event.currentTarget.previousElementSibling.className;
 		var rootId = event.currentTarget.offsetParent.offsetParent.offsetParent.id;
 
 		var classes = [];
@@ -188,6 +181,15 @@ function drawModal(whoRang,type)
 
 		getFormValue(rootId,classes[0],classes[1])
 	});
+
+	$(".button-add-note").click(function(event){
+
+		var parentCell = event.currentTarget.offsetParent.offsetParent.offsetParent.id;
+		var rawValue = $("#" + parentCell + " .modal-overlay form textarea").val();
+		
+		getModalValue(rawValue,parentCell)
+	});
+
 
 	$("#" + whoRang + " input[type='text']").keyup(function(event){
 		if (event.keyCode == 13)
