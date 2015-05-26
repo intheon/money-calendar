@@ -38,6 +38,8 @@ body
 .date-body
 {	
 	min-height:			44px;
+	display:			flex;
+	flex-wrap:			wrap;
 }
 .active-cell
 {
@@ -45,6 +47,7 @@ body
 }
 .modal-overlay
 {
+	background-color: 	#FFFFFF;
 	width: 				100%;
 	z-index: 			4;
 	height: 			100%;
@@ -60,4 +63,96 @@ body
 	position:			absolute;
     box-sizing: border-box;
     resize: 			none;
+}
+.modal-overlay-close
+{
+	padding:			8px;
+	position: 			absolute;
+	top:				0;
+	left:				0;
+	z-index:			11;
+	float:				left;
+}
+.modal-overlay-close:hover
+{
+	color:				#E9B34F;
+	opacity:			0.6;
+}
+.cell-menu
+{
+	display:			none;
+	width:				100%;
+}
+.cell-menu img
+{
+	padding:			2%;
+	float:				right;
+}
+.cell-menu img:hover
+{
+	opacity:			0.4;
+}
+.cell-menu input[type="button"]
+{
+	padding: 			2%;
+	text-align: 		center;
+	box-sizing: 		border-box;
+	z-index:			9;
+	float:				right;
+}
+input[type="button"]
+{
+	padding: 			2%;
+	text-align: 		center;
+	box-sizing:			border-box;
+	width:				100%;
+	border:				0;
+}
+input[type="text"]
+{
+	border:				0;
+	padding: 			2%;
+	width:				50%;
+	text-align: 		center;
+	box-sizing: 		border-box;
+	float:				left;
+}
+input[type="text"]:nth-child(even)
+{
+	background-color:	#e1e1e1;
+}
+.warning-message
+{
+	position:			fixed;
+	top:				0;
+	left:				0;
+	z-index: 			13;
+	padding:			3%;
+	background-color:	#E9B34F;
+	border-radius:		2px;
+}
+
+.close-warning-box
+{
+	padding:			4px;
+	margin:				0;
+	position:			absolute;
+	top:				0;
+	left:				0;
+}
+
+.close-warning-box:hover
+{
+	opacity:			0.4;
+	cursor: 			pointer;
+}
+
+.spend-item
+{
+	float:				left;
+	background-color:	#FFFFFF;
+	padding:			1%;
+	margin:				1%;
+	border-radius:		6px;
+
 }
