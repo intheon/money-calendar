@@ -260,7 +260,7 @@ function getFormValue(parentCell,firstField,secondField)
 		if (isNaN(secondFieldVal)) showWarning("this isnt a number!");
 		else
 		{
-			$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>£" + secondFieldVal + "</div></div>")
+			$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>£" + secondFieldVal + "</div></div>")
 			removeModal(parentCell);
 		}
 	}

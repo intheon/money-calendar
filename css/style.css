@@ -112,6 +112,7 @@ body
 }
 .cell-menu
 {
+	z-index:			100;
 	display:			none;
 }
 .cell-menu img
@@ -200,24 +201,34 @@ input[type="text"]
 
 .spend-item
 {
-	float:				left;
 	font-family: 		'Kalam', cursive;
-	background-color: 	#a9d4a0;
-	-webkit-transform:	rotate(-6deg);
-  	-o-transform:		rotate(-6deg);
-  	-moz-transform:		rotate(-6deg);
-  	transform:			rotate(-6deg);
-	padding:			1%;
-	margin:				1%;
-	border-radius:		6px;
+	-webkit-transform:	rotate(-2deg);
+  	-o-transform:		rotate(-2deg);
+  	-moz-transform:		rotate(-2deg);
+  	transform:			rotate(-2deg);
+	float:				left;
+	box-sizing: 		border-box;
+	padding:			2% !important;
+	padding-top:		1% !important;
+	margin:				2% !important; 
+	background-color:	#c5e1bf;
+	max-height:			30px !important;
+	position: 			relative;
+	z-index: 			1;
 }
+
+
 .spend-label
 {
+	float:				left;
+	font-size:			0.9em;
+	padding-right:		1%;
 
 }
 .spend-value
 {
-	
+	font-size:			0.9em;
+	float:				left;
 }
 .note
 {
