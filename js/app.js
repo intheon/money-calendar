@@ -232,12 +232,14 @@ function removeModal(whoRang)
 
 function getModalValue(rawValue,parentCell)
 {
-	//var rawValue = event.currentTarget.firstChild.childNodes[1].lastChild.value;
+	var tidyValue = rawValue.replace(/[^\w\s!?]/g,'');
+
+	var noteHTML = "<div class='note'><div class='pin'></div>" + tidyValue + "</div>"
 
 	//var parentCell = event.currentTarget.id;
 
 	// todo - persistence!
-	$("#" + parentCell + " .date-body").append(rawValue);
+	$("#" + parentCell + " .date-body").append(noteHTML);
 
 	removeModal(parentCell);
 }
@@ -258,7 +260,7 @@ function getFormValue(parentCell,firstField,secondField)
 		if (isNaN(secondFieldVal)) showWarning("this isnt a number!");
 		else
 		{
-			$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>" + secondFieldVal + "</div></div>")
+			$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>£" + secondFieldVal + "</div></div>")
 			removeModal(parentCell);
 		}
 	}
