@@ -39,7 +39,7 @@ function defineMetadata(time,money)
 	//money.netPay 		= "1424";
 	//loadInformation(time,money);
 
-	ajaxController(money,"netPay",4);
+	ajaxController(money,"netPay",time.monthNum);
 
 	Object.observe(money,function(changes){
 		loadInformation(time,money)
@@ -62,6 +62,7 @@ function ajaxController(rootObject,newPropertyName,monthToCheck)
 		},
 		success				: function(data)
 		{
+			console.log(data);
 			rootObject[newPropertyName] = data;
 		}
 	});
@@ -137,13 +138,23 @@ function loadCalendar(time)
 // and draws all the helpful bits of motovational information
 function loadInformation(time,money)
 {
-	$("#information-panel").append("<div class='information-row'>\
+	if (money.netPay == "empty")
+	{
+		$(document.body).prepend("<div class='full-page-overlay'></div><div class='full-page-capture'><h2>Staph!</h2><h3>How much did you get paid this month?</h3><input type='text' placeholder='$$$$$' id='this-months-pay'><input type='button' value='Submit to DB' id='submit-months-pay'></div>");
+		$("#submit-months-pay").click(function(){
+			$("#this-months-pay").val();
+		});
+	}
+	else
+	{
+		$("#information-panel").append("<div class='information-row'>\
 			<div class='information-month'>It is "+time.month+"</div>\
 			<div class='information-next-payday'>You have "+time.toPayday+" days until payday</div>\
 			<div class='information-payday-amount'>You were paid £"+money.netPay+" this month</div>\
 		</div>");
 
-	$("#calendar-item-28 .date-body").append("£"+money.netPay);
+		$("#calendar-item-28 .date-body").append("£"+money.netPay);
+	}
 }
 
 var alreadyHasModal = [];

@@ -35,11 +35,20 @@ if (isset($_POST['monthToCheck']))
 		// get response
 		$response = $statement->fetchAll();
 
-		// cycle through
-		foreach ($response as $row) {
-			// spit out amount paid in that month
-    		echo $row['payday_amount'];
+		if (!$response)
+		{
+			echo "empty";
 		}
+		else
+		{
+			// cycle through
+			foreach ($response as $row) {
+				// spit out amount paid in that month
+    			echo $row['payday_amount'];
+			}
+		}
+
+
 
 
 
