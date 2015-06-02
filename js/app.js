@@ -62,7 +62,7 @@ function ajaxController(rootObject,newPropertyName,monthToCheck)
 		},
 		success				: function(data)
 		{
-			console.log(data);
+			//console.log(data);
 			rootObject[newPropertyName] = data;
 		}
 	});
@@ -142,7 +142,30 @@ function loadInformation(time,money)
 	{
 		$(document.body).prepend("<div class='full-page-overlay'></div><div class='full-page-capture'><h2>Staph!</h2><h3>How much did you get paid this month?</h3><input type='text' placeholder='$$$$$' id='this-months-pay'><input type='button' value='Submit to DB' id='submit-months-pay'></div>");
 		$("#submit-months-pay").click(function(){
-			$("#this-months-pay").val();
+			var amount = $("#this-months-pay").val();
+
+			if (amount == "")
+			{
+				$("#this-months-pay").val("empty");
+			}
+			else
+			{
+				if (!isNaN(amount))
+				{
+					if (amount <= 5000)
+					{
+						console.log("proceed");
+					}
+					else
+					{
+						$("#this-months-pay").val("Are you rich?");
+					}
+				}
+				else
+				{
+					$("#this-months-pay").val("NaN");
+				}
+			}
 		});
 	}
 	else
