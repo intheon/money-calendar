@@ -48,10 +48,56 @@ if (isset($_POST['monthToCheck']))
 			}
 		}
 
+		// close
+		$connection	= null;
+	}
+	catch (PDOException $exception)
+	{
+		// get exception message
+		echo "I'm sorry, Dave. I'm afraid I can't let you do that. | " . $exception->getMessage();
 
+		// write it to a log file
+    	file_put_contents('PDOErrors.txt', $exception->getMessage(), FILE_APPEND);
+	}
 
+}
 
+if (isset($_POST["newMonthAmount"]) && isset($_POST["exactDate"]) && isset($_POST["monthNumber"]))
+{
+	$amount = $_POST["newMonthAmount"];
+	$date = $_POST["exactDate"];	
+	$month = $_POST["monthNumber"];
 
+	try
+	{
+		// open
+		$connection = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+
+		// set error mode attributes to warnings
+		$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+		// a statement to insert a new record
+		$statement = $connection->prepare("INSERT INTO paydays(date, payday_amount, month_number) VALUES (:date, :payday_amount, :month_number)");
+
+		// bind parameters
+		$statement->bindParam(':date', $date);
+		$statement->bindParam(':payday_amount', $amount);
+		$statement->bindParam(':month_number', $month);
+
+		// execute
+		$statement->execute();
+
+		// get response
+		$response = $statement->fetchAll();
+
+		if (!$response)
+		{
+			echo "something went wrong";
+		}
+		else
+		{
+			echo var_dump($response);
+		}
 
 		// close
 		$connection	= null;

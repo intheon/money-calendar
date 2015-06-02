@@ -30,6 +30,7 @@ function defineMetadata(time,money)
 	time.month 			= moment().format("MMMM");
 	time.monthNum		= moment().format("M");
 	time.todaysDate 	= moment().format("D");
+	time.fullDate 		= moment().format("YYYY-MM-DD");
 	time.daysInMonth 	= moment().daysInMonth();
 	time.payday 		= moment().date("28");
 	time.toPayday 		= time.payday.diff(time.today,"days");
@@ -154,7 +155,22 @@ function loadInformation(time,money)
 				{
 					if (amount <= 5000)
 					{
-						console.log("proceed");
+						var rootDir 			= "http://localhost/money-calendar/"; 	// local
+						//var rootDir 			= "http://intheon.xyz/money-calendar/"; // production
+						$.ajax({
+							type				: "POST",
+							url     			: rootDir + "php/money.php",
+							data 				: 
+							{
+								newMonthAmount	: amount,
+								exactDate		: time.fullDate,
+								monthNumber		: time.monthNum
+							},
+							success	: function(data)
+							{
+								console.log(data);
+							}
+						});
 					}
 					else
 					{
