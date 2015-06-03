@@ -25,15 +25,19 @@ $(document).ready(function()
 function defineMetadata(time,money)
 {
 // time
-	time.today 			= moment();
-	time.year 			= moment().year();
-	time.month 			= moment().format("MMMM");
-	time.monthNum		= moment().format("M");
-	time.todaysDate 	= moment().format("D");
-	time.fullDate 		= moment().format("YYYY-MM-DD");
-	time.daysInMonth 	= moment().daysInMonth();
-	time.payday 		= moment().date("28");
-	time.toPayday 		= time.payday.diff(time.today,"days");
+	time.today 				= moment();
+	time.year 				= moment().year();
+	time.month 				= moment().format("MMMM");
+	time.monthNum			= moment().format("M");
+	time.todaysDate 		= moment().format("D");
+	time.fullDate 			= moment().format("YYYY-MM-DD");
+	time.dayShort 			= moment().format("ddd");
+	time.firstDayOfMonth 	= moment(1,"DD");
+	time.daysInMonth 		= moment().daysInMonth();
+	time.payday 			= moment().date("28");
+	time.toPayday 			= time.payday.diff(time.today,"days");
+
+	//time.test				= time.today.add(1, "days");
 
 // money
 
@@ -72,13 +76,17 @@ function ajaxController(rootObject,newPropertyName,monthToCheck)
 // actually draws the calendar to the dom
 function loadCalendar(time)
 {
+	var today = time.firstDayOfMonth;
+
 	// draw all the dates
 	for (counter = 1; counter <= time.daysInMonth; counter++)
 	{
+		//var day = today.add(counter, "days");
+		//console.log(today.moment().add(1,"dd"));
 
 		$("#cost-calendar").append("<div class='calendar-item' id='calendar-item-"+counter+"'>\
 			<div class='cell-menu'><img src='./note.png' class='button-add' id='button-note' width='7%'><img src='./paper-bill.png' width='7%' class='button-add' id='button-spend'></div>\
-			<div class='date-number'>"+counter+"</div>\
+			<div class='date-number'>"+counter+"<div class='day-label'></div></div>\
 			<div class='date-body'></div></div>");
 
 		if (counter == time.todaysDate)
@@ -141,7 +149,7 @@ function loadInformation(time,money)
 {
 	if (money.netPay == "empty")
 	{
-		$(document.body).prepend("<div class='full-page-overlay'></div><div class='full-page-capture'><h2>Staph!</h2><h3>How much did you get paid this month?</h3><input type='text' placeholder='$$$$$' id='this-months-pay'><input type='button' value='Submit to DB' id='submit-months-pay'></div>");
+		$(document.body).prepend("<div class='overlay-wrapper'><div class='full-page-overlay'></div><div class='full-page-capture'><h2>Staph!</h2><h3>How much did you get paid this month?</h3><input type='text' placeholder='$$$$$' id='this-months-pay'><input type='button' value='Submit to DB' id='submit-months-pay'></div></div>");
 		$("#submit-months-pay").click(function(){
 			var amount = $("#this-months-pay").val();
 
@@ -168,7 +176,18 @@ function loadInformation(time,money)
 							},
 							success	: function(data)
 							{
-								console.log(data);
+								if (data == "remove")
+								{
+									$(".overlay-wrapper").fadeOut(function(){
+										$(".overlay-wrapper").hide();
+									});
+
+									ajaxController(money,"netPay",time.monthNum);
+								}
+								else
+								{
+									console.log("something went horribly wrong");
+								}
 							}
 						});
 					}
@@ -192,7 +211,7 @@ function loadInformation(time,money)
 			<div class='information-payday-amount'>You were paid £"+money.netPay+" this month</div>\
 		</div>");
 
-		$("#calendar-item-28 .date-body").append("£"+money.netPay);
+		//$("#calendar-item-28 .date-body").append("£"+money.netPay);
 	}
 }
 

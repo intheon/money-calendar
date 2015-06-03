@@ -85,18 +85,16 @@ if (isset($_POST["newMonthAmount"]) && isset($_POST["exactDate"]) && isset($_POS
 		$statement->bindParam(':month_number', $month);
 
 		// execute
-		$statement->execute();
+		$success = $statement->execute();
 
 		// get response
-		$response = $statement->fetchAll();
-
-		if (!$response)
+		if ($success)
 		{
-			echo "something went wrong";
+			echo "remove";
 		}
 		else
 		{
-			echo var_dump($response);
+			echo "something went horribly wrong";
 		}
 
 		// close
