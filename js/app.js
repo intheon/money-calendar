@@ -18,7 +18,7 @@ $(document).ready(function()
 
 // functions
 	defineMetadata(time,money);
-	loadCalendar(time);
+	loadCalendar(time,money);
 });
 
 // defining useful stuff as objects
@@ -32,27 +32,22 @@ function defineMetadata(time,money)
 	time.todaysDate 		= moment().format("D");
 	time.fullDate 			= moment().format("YYYY-MM-DD");
 	time.dayShort 			= moment().format("ddd");
-	time.firstDayOfMonth 	= moment(1,"DD");
+	time.firstDayOfMonth 	= moment(1,"D");
 	time.daysInMonth 		= moment().daysInMonth();
 	time.payday 			= moment().date("28");
 	time.toPayday 			= time.payday.diff(time.today,"days");
-
-	//time.test				= time.today.add(1, "days");
-
 // money
+	getPay(money,"netPay",time.monthNum);
 
-	//money.netPay 		= "1424";
-	//loadInformation(time,money);
+	money.spendThisMonth 	= 0;
 
-	ajaxController(money,"netPay",time.monthNum);
-
+// object-listener
 	Object.observe(money,function(changes){
 		loadInformation(time,money)
 	});
-
 }
 
-function ajaxController(rootObject,newPropertyName,monthToCheck)
+function getPay(rootObject,newPropertyName,monthToCheck)
 {
 	var rootDir 		= "http://localhost/money-calendar/"; // local
 	//var rootDir 		= "http://intheon.xyz/money-calendar/"; // production
@@ -67,26 +62,23 @@ function ajaxController(rootObject,newPropertyName,monthToCheck)
 		},
 		success				: function(data)
 		{
-			//console.log(data);
 			rootObject[newPropertyName] = data;
 		}
 	});
 }
 
 // actually draws the calendar to the dom
-function loadCalendar(time)
+function loadCalendar(time,money)
 {
-	var today = time.firstDayOfMonth;
-
 	// draw all the dates
 	for (counter = 1; counter <= time.daysInMonth; counter++)
 	{
-		//var day = today.add(counter, "days");
-		//console.log(today.moment().add(1,"dd"));
+		var day = moment(counter,"D");
+			day = day.format("dd");
 
 		$("#cost-calendar").append("<div class='calendar-item' id='calendar-item-"+counter+"'>\
-			<div class='cell-menu'><img src='./note.png' class='button-add' id='button-note' width='7%'><img src='./paper-bill.png' width='7%' class='button-add' id='button-spend'></div>\
-			<div class='date-number'>"+counter+"<div class='day-label'></div></div>\
+			<div class='cell-menu'><img src='./note.png' class='button-add' id='button-note' width='22%'><img src='./paper-bill.png' width='22%' class='button-add' id='button-spend'></div>\
+			<div class='date-number'>"+counter+"<div class='day-label'>"+day+"</div></div>\
 			<div class='date-body'></div></div>");
 
 		if (counter == time.todaysDate)
@@ -118,7 +110,7 @@ function loadCalendar(time)
 			if (alreadyHasModal[0] === undefined || null)
 			{
 				alreadyHasModal.push(un)
-				drawModal(un,type);
+				drawModal(un,type,money);
 			}
 			else
 			{
@@ -205,20 +197,41 @@ function loadInformation(time,money)
 	}
 	else
 	{
-		$("#information-panel").append("<div class='information-row'>\
-			<div class='information-month'>It is "+time.month+"</div>\
-			<div class='information-next-payday'>You have "+time.toPayday+" days until payday</div>\
-			<div class='information-payday-amount'>You were paid £"+money.netPay+" this month</div>\
+		$("#information-panel").html("<div class='information-wrapper'>\
+			<div class='information-month information-row'>"+time.month+"</div>\
+			<div class='information-next-payday information-row'><div class='integer'>"+time.toPayday+"</div> days until payday</div>\
+			<div class='information-payday-amount information-row'><div class='integer'>£"+money.netPay+"</div> wage this month</div>\
+			<div class='information-month-spend information-row'><div class='integer'>£"+ money.spendThisMonth +"</div> spent this month</div>\
+			<div class='information-wage-remaining information-row'><div class='integer'>£"+ parseInt(money.netPay - money.spendThisMonth) +"</div> remains</div>\
+			<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(money.spendThisMonth / time.daysInMonth)  +"</div> per day</div>\
 		</div>");
+
+		var toEvaluate = {
+			remaining: ["information-wage-remaining",parseInt(money.netPay - money.spendThisMonth)],
+			spend: ["information-month-spend", money.spendThisMonth]
+		};
+
+		calculateColour(toEvaluate);
 
 		//$("#calendar-item-28 .date-body").append("£"+money.netPay);
 	}
 }
 
+
+function calculateColour(subjects)
+{
+	if (subjects.spend[1] >= 100)
+	{
+		
+	}
+
+}
+
+
 var alreadyHasModal = [];
 
 
-function drawModal(whoRang,type)
+function drawModal(whoRang,type,money)
 {
 	if (type == "button-note")
 	{
@@ -248,7 +261,7 @@ function drawModal(whoRang,type)
 			classes.push(this.className);
 		});
 
-		getFormValue(rootId,classes[0],classes[1])
+		getFormValue(rootId,classes[0],classes[1],money)
 	});
 
 	$(".button-add-note").click(function(event){
@@ -271,7 +284,7 @@ function drawModal(whoRang,type)
 
 			var rootId = event.currentTarget.offsetParent.offsetParent.id;
 
-			getFormValue(rootId,classes[0],classes[1]);
+			getFormValue(rootId,classes[0],classes[1],money);
 		}
 	});
 
@@ -301,6 +314,7 @@ function removeModal(whoRang)
 
 function getModalValue(rawValue,parentCell)
 {
+	console.log("getMod");
 	var tidyValue = rawValue.replace(/[^\w\s!?]/g,'');
 
 	var noteHTML = "<div class='note'><div class='pin'></div>" + tidyValue + "</div>"
@@ -310,10 +324,14 @@ function getModalValue(rawValue,parentCell)
 	// todo - persistence!
 	$("#" + parentCell + " .date-body").append(noteHTML);
 
+	setNotes(parentCell,noteHTML);
+
+
+
 	removeModal(parentCell);
 }
 
-function getFormValue(parentCell,firstField,secondField)
+function getFormValue(parentCell,firstField,secondField,money)
 {
 	//var firstField = formId.currentTarget.previousElementSibling.previousElementSibling.className;
 	//var secondField = formId.currentTarget.previousElementSibling.className;
@@ -329,7 +347,10 @@ function getFormValue(parentCell,firstField,secondField)
 		if (isNaN(secondFieldVal)) showWarning("this isnt a number!");
 		else
 		{
-			$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>£" + secondFieldVal + "</div></div>")
+			$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>£" + secondFieldVal + "</div></div>");
+
+			money.spendThisMonth += parseInt(secondFieldVal);
+
 			removeModal(parentCell);
 		}
 	}
@@ -346,4 +367,37 @@ function showWarning(message)
 		});
 	});
 
+}
+
+// ajax up in this biatch!
+function getNotes()
+{
+
+}
+
+function setNotes(parentCell,noteHTML)
+{
+	var rootDir 		= "http://localhost/money-calendar/"; // local
+  //var rootDir 		= "http://intheon.xyz/money-calendar/"; // production
+
+	var jsonItem = {};
+		jsonItem.parentCell = parentCell;
+		jsonItem.noteHTML = noteHTML;
+		
+
+		/*
+	// checks if this file exists on the server
+	$.ajax({
+		type				: "POST",
+		url                 : rootDir + "php/money.php",
+		data 				: 
+		{
+			monthToCheck	: monthToCheck	
+		},
+		success				: function(data)
+		{
+			rootObject[newPropertyName] = data;
+		}
+	});
+*/
 }

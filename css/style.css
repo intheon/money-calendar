@@ -14,7 +14,7 @@ body
 {
 	position:			relative !important;
 	flex-wrap:			wrap;
-	width:				33%;
+	width:				13%;
 	height:				auto;
 	background-color:	#EFEFEF;
 	transition:			background-color 1s;
@@ -131,6 +131,12 @@ body
 	z-index:			9;
 	float:				right;
 }
+.day-label
+{
+	position:			absolute;
+	right:				0;
+	bottom:				0;
+}
 
 input[type="button"]
 {
@@ -215,8 +221,6 @@ input[type="text"]
 	position: 			relative;
 	z-index: 			1;
 }
-
-
 .spend-label
 {
 	float:				left;
@@ -348,4 +352,44 @@ textarea:focus, input:focus
 {
     outline: 			0;
     opacity:			0.8;
+}
+
+
+.information-month
+{
+	padding: 			1%;
+	position:			absolute;
+	bottom:				0;
+	right:				0;
+	opacity:			0.4;
+	color:				#000000;
+	font-size:			2.2em;
+	border-bottom:		0px !important;
+}
+
+.integer
+{
+	font-size:			1.3em;
+}
+
+.information-wrapper
+{
+	display:			flex;
+	flex-wrap:			wrap;
+}
+
+.information-row
+{
+	padding:			2%;
+	margin:				3.3%;
+	flex-direction:		column;
+	border-bottom:		2px solid;
+}
+
+.information-row
+{
+	padding:			2%;
+	margin:				3.3%;
+	flex-direction:		column;
+	border-bottom:		2px solid;
 }

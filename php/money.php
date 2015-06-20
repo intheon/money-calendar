@@ -9,6 +9,7 @@ $username 			= "root";
 $password 			= "";
 $dbname 			= "money-calendar";
 
+// GETTING THE MONTHLY PAY
 // only this block if checking for a certain months pay
 if (isset($_POST['monthToCheck']))
 {
@@ -62,6 +63,7 @@ if (isset($_POST['monthToCheck']))
 
 }
 
+// SETTING THE MONTHLY PAY
 if (isset($_POST["newMonthAmount"]) && isset($_POST["exactDate"]) && isset($_POST["monthNumber"]))
 {
 	$amount = $_POST["newMonthAmount"];
@@ -108,8 +110,6 @@ if (isset($_POST["newMonthAmount"]) && isset($_POST["exactDate"]) && isset($_POS
 		// write it to a log file
     	file_put_contents('PDOErrors.txt', $exception->getMessage(), FILE_APPEND);
 	}
-
-
 }
 
 ?>
