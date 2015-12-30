@@ -197,13 +197,15 @@ function loadInformation(time,money)
 	}
 	else
 	{
+		var blah = parseInt(money.netPay - money.spendThisMonth);
 		$("#information-panel").html("<div class='information-wrapper'>\
 			<div class='information-month information-row'>"+time.month+"</div>\
 			<div class='information-next-payday information-row'><div class='integer'>"+time.toPayday+"</div> days until payday</div>\
 			<div class='information-payday-amount information-row'><div class='integer'>£"+money.netPay+"</div> wage this month</div>\
 			<div class='information-month-spend information-row'><div class='integer'>£"+ money.spendThisMonth +"</div> spent this month</div>\
 			<div class='information-wage-remaining information-row'><div class='integer'>£"+ parseInt(money.netPay - money.spendThisMonth) +"</div> remains</div>\
-			<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(money.spendThisMonth / time.daysInMonth)  +"</div> per day</div>\
+			<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(money.spendThisMonth / time.daysInMonth)  +"</div> spending per day</div>\
+			<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(blah / time.daysInMonth)  +"</div> allowance per day</div>\
 		</div>");
 
 		var toEvaluate = {
